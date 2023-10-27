@@ -4,6 +4,12 @@ from datetime import datetime
 
 DATA_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard"
 CSV_FILE = "erddap_log.csv"
+VARNAMES = ['dataset_id', 'data_volume', 'requests', 'nc_req', 'dods_req',
+       'text_req', 'metadata_req', 'graph_req', 'json_req', 'mat_req',
+       'images_req', 'other_req', 'nc_size', 'dods_size', 'text_size',
+       'metadata_size', 'graph_size', 'json_size', 'mat_size', 'images_size',
+       'other_size', 'unique_visitors', 'time_epoch', 'time']
+
 
 def get_log(path: str) -> pd.DataFrame:
 
@@ -19,9 +25,12 @@ def get_log(path: str) -> pd.DataFrame:
         df.drop(index=0, inplace=True)
     return df
 
-def check_column_exists(df, col_name):
-    if col_name not in df.columns:
-        raise ValueError(f"Column '{col_name}' does not exist in the DataFrame.")
+def check_column_exists(cnames):
+    validvars = set(VARNAMES).issubset(set(cnames))
+
+    if not validvars:
+        print(cnames)
+        raise ValueError(f"All required columns are not present. Please check if variables are missing or names have changed")
 
 def get_summary(df: pd.DataFrame):
     print(df.describe())    
@@ -30,7 +39,7 @@ def cleanup_df(df):
 
 # format datetime
     try:
-        check_column_exists(df, 'time')  
+        check_column_exists(df.columns)  
     except ValueError as e:
         print(e)
     else:    
@@ -39,18 +48,17 @@ def cleanup_df(df):
 
     return df
 
-
-
 def latest_timestamp(dt):
     return dt.max()
 
 
 # TODO: make list of used var names and check existance
+
 def main():
     data = get_log(DATA_PATH)
     cleaned_dat = cleanup_df(data)    
     
-    print(cleaned_dat)
+    #print(cleaned_dat.columns)
 
 
 if __name__ == "__main__":
