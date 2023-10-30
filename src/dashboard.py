@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from data_worker import DataWorker
 
 DATA_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard"
 CSV_FILE = "erddap_log.csv"
@@ -10,7 +11,7 @@ VARNAMES = ['dataset_id', 'data_volume', 'requests', 'nc_req', 'dods_req',
        'other_size', 'unique_visitors', 'time_epoch', 'time']
 
 
-def get_log(path: str) -> pd.DataFrame:
+def get_logdata(path: str) -> pd.DataFrame:
     ''' returns pd.Dataframe'''
 
     dfile = os.path.join(path, CSV_FILE)
@@ -25,18 +26,18 @@ def get_log(path: str) -> pd.DataFrame:
         df.drop(index=0, inplace=True)
     return df
 
-def check_column_exists(cnames) -> None:
+def _check_column_exists(cnames) -> None:
     validvars = set(VARNAMES).issubset(set(cnames))
 
     if not validvars:
         print(cnames)
         raise ValueError("All required columns are not present.")
 
-def cleanup_df(df: pd.DataFrame) -> pd.DataFrame:
+def format_data(df: pd.DataFrame) -> pd.DataFrame:
 
-# format
+    # Check all columns required for analysis
     try:
-        check_column_exists(df.columns)
+        _check_column_exists(df.columns)
     except ValueError as e:
         print(e)
     else:
@@ -49,11 +50,31 @@ def latest_timestamp(dt):
     return dt.max()
 
 def main():
-    get_log(DATA_PATH)
-    #cleaned_dat = cleanup_df(data)
+    df = get_logdata(DATA_PATH)
+    worker = DataWorker(df)
+    worker.get_latest_date('newtime')
 
-    #print(cleaned_dat.columns)
+
+# latest_date = analyzer.get_latest_date('date')
+# mean_value = analyzer.mean_of_column('values')
+# summary_stats = analyzer.summary_statistics('values')
+
+# print("Latest Date:", latest_date)
+# print("Mean of values:", mean_value)
+# print("Summary Statistics:\n", summary_stats)
 
 
 if __name__ == "__main__":
     main()
+
+
+
+
+# TODO
+# COUNT Total # of Request
+# COUNT  Total Unique “Known” Users
+# COUNT Total Active Datasets
+# BAR GRAPH Top 10 most requested datasets (most requests)
+# TABLE Top 10 most requested datasets with link to metadata (most request)
+# PIE GRAPH Total requests by formats
+# PIE GRAPH total request by volume
