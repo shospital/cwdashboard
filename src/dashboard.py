@@ -25,15 +25,14 @@ def get_log(path: str) -> pd.DataFrame:
         df.drop(index=0, inplace=True)
     return df
 
-def check_column_exists(cnames):
+def check_column_exists(cnames) -> None:
     validvars = set(VARNAMES).issubset(set(cnames))
 
     if not validvars:
         print(cnames)
         raise ValueError("All required columns are not present.")
 
-
-def cleanup_df(df):
+def cleanup_df(df: pd.DataFrame) -> pd.DataFrame:
 
 # format
     try:
@@ -48,9 +47,6 @@ def cleanup_df(df):
 
 def latest_timestamp(dt):
     return dt.max()
-
-
-# TODO: make list of used var names and check existance
 
 def main():
     get_log(DATA_PATH)
