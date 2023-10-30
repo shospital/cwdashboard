@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-from datetime import datetime
 
 DATA_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard"
 CSV_FILE = "erddap_log.csv"
@@ -12,9 +11,10 @@ VARNAMES = ['dataset_id', 'data_volume', 'requests', 'nc_req', 'dods_req',
 
 
 def get_log(path: str) -> pd.DataFrame:
+    ''' returns pd.Dataframe'''
 
     dfile = os.path.join(path, CSV_FILE)
-    
+
     if not os.path.isfile(dfile):
         raise FileNotFoundError(f"CW ERROR: The file {dfile} does not exist.")
 
@@ -30,19 +30,17 @@ def check_column_exists(cnames):
 
     if not validvars:
         print(cnames)
-        raise ValueError(f"All required columns are not present. Please check if variables are missing or names have changed")
+        raise ValueError("All required columns are not present.")
 
-def get_summary(df: pd.DataFrame):
-    print(df.describe())    
 
 def cleanup_df(df):
 
-# format datetime
+# format
     try:
-        check_column_exists(df.columns)  
+        check_column_exists(df.columns)
     except ValueError as e:
         print(e)
-    else:    
+    else:
         df['newtime'] = pd.to_datetime(df['time'])
         df['year'], df['month'] = df['newtime'].dt.year, df['newtime'].dt.month
 
@@ -55,12 +53,11 @@ def latest_timestamp(dt):
 # TODO: make list of used var names and check existance
 
 def main():
-    data = get_log(DATA_PATH)
-    cleaned_dat = cleanup_df(data)    
-    
+    get_log(DATA_PATH)
+    #cleaned_dat = cleanup_df(data)
+
     #print(cleaned_dat.columns)
 
 
 if __name__ == "__main__":
     main()
-
