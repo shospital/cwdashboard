@@ -1,0 +1,33 @@
+{
+    "stats": {
+        "tot_req": 3269862.0,
+        "tot_users": 46670.0,
+        "active_ds": 770,
+        "top10_reqs": {
+            "labels": [
+                "all_datsets",
+                "ncdcOisst2Agg",
+                "erdMH1chla8day",
+                "erdNavgem05D500mb",
+                "jplMURSST41",
+                "ncepRtofsG3DFore6hrlyR1",
+                "erdMH1chla1day",
+                "erdMurFront41USWest",
+                "erdMH1chlamday",
+                "erdNogaps1D10mWind"
+            ],
+            "data": [
+                1666886.0,
+                462386.0,
+                104342.0,
+                102292.0,
+                81812.0,
+                41728.0,
+                32328.0,
+                27552.0,
+                20406.0,
+                16964.0
+            ]
+        }
+    }
+}
