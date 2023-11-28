@@ -5,7 +5,6 @@
         "active_ds": 770,
         "top10_reqs": {
             "labels": [
-                "all_datsets",
                 "ncdcOisst2Agg",
                 "erdMH1chla8day",
                 "erdNavgem05D500mb",
@@ -17,7 +16,6 @@
                 "erdNogaps1D10mWind"
             ],
             "data": [
-                1666886.0,
                 462386.0,
                 104342.0,
                 102292.0,

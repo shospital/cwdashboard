@@ -23,80 +23,31 @@ let brcolor5=  [
 ];
 
 
+function barchart1(ctx, dat) {
+  var chart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+      labels: dat.labels,
 
-// Bar Chart : Top5 Total requests by Dataset ID
-function barchart1(dat) {
-    let ds = [];
-    let labels = [];
-
-    dat.forEach(d => {
-        ds.push(d.requests);
-        labels.push(d.id);
-       });
-
-    const dataTop10 = {
-      labels,
-      datasets: [{
-        axis: 'y',
-        label: 'No. of Requests',
-        data: ds,
-        fill: false,
-        backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(255, 205, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(201, 203, 207, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(255, 205, 86, 0.2)'
-        ],
-        borderColor: [
-          'rgb(255, 99, 132)',
-          'rgb(255, 159, 64)',
-          'rgb(255, 205, 86)',
-          'rgb(75, 192, 192)',
-          'rgb(54, 162, 235)',
-          'rgb(153, 102, 255)',
-          'rgb(201, 203, 207)',
-          'rgb(255, 99, 132)',
-          'rgb(255, 159, 64)',
-          'rgb(255, 205, 86)'
-        ],
-
-        borderWidth: 1,
-        maxBarThickness: 60,
-      }]
-    };
-
-      const config = {
-        type: 'horizontalBar',
-        data: dataTop10,
-        options: {
-          indexAxis:'y',
-          layout: {
-            padding: {
-              left: 10,
-              right: 10,
-              top: 10,
-              bottom: 10
-            },
-            plugins: {
-              legend: {
-                hidden: true
-              }
-            }
-          },
-        }
-      };
-
-
-    //
-    new Chart( document.getElementById('BarChartTop10'), config);
-
+  datasets: [{
+    axis: 'y',
+    label: 'No. of Requests',
+    data: dat.data,
+    borderWidth: 1,
+    maxBarThickness: 60,
+  }]
+  },
+  options: {
+      plugins: {
+          colorschemes: {
+              scheme: 'DarkTwo3'
+          }
+      }
   }
+  });
+      }
+
+
 
 
 function barchart2(dat) {

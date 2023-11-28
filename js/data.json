@@ -1,32 +1,181 @@
 {
     "stats": {
-        "tot_req": 3269862.0,
-        "tot_users": 46670.0,
-        "active_ds": 770,
+        "tot_req": 1211898.0,
+        "tot_users": 24550.0,
+        "active_ds": 475,
         "top10_reqs": {
+            "titles": [
+                "SST, NOAA Optimum Interpolation",
+                "Chlorophyll, NASA MODIS Aqua",
+                "SST, NASA MUR",
+                "Chlorophyll, NASA MODIS Aqua",
+                "Thermal Fronts, NASA MUR",
+                "Chlorophyll, NASA MODIS Aqua",
+                "Winds, ASCAT",
+                "SST, Pathfinder V5.3",
+                "Salinity, SMOS",
+                "Aviso Sea Surface Height"
+            ],
             "labels": [
-                "all_datsets",
                 "ncdcOisst2Agg",
                 "erdMH1chla8day",
-                "erdNavgem05D500mb",
                 "jplMURSST41",
-                "ncepRtofsG3DFore6hrlyR1",
                 "erdMH1chla1day",
                 "erdMurFront41USWest",
                 "erdMH1chlamday",
-                "erdNogaps1D10mWind"
+                "erdQAstress1day",
+                "nceiPH53sstn1day",
+                "coastwatchSMOSv662SSS1day",
+                "jplAvisoSshMon"
             ],
             "data": [
-                1666886.0,
                 462386.0,
                 104342.0,
-                102292.0,
                 81812.0,
-                41728.0,
                 32328.0,
                 27552.0,
                 20406.0,
-                16964.0
+                16374.0,
+                12718.0,
+                11242.0,
+                11074.0
+            ]
+        },
+        "file_by_req": {
+            "labels": [
+                "nc",
+                "dods",
+                "text",
+                "metadata",
+                "graph",
+                "json",
+                "mat",
+                "images",
+                "other"
+            ],
+            "data": [
+                648264.0,
+                235450.0,
+                86320.0,
+                28300.0,
+                46714.0,
+                6528.0,
+                6056.0,
+                154140.0,
+                0.0
+            ]
+        },
+        "file_by_size": {
+            "labels": [
+                "nc",
+                "dods",
+                "text",
+                "metadata",
+                "graph",
+                "json",
+                "mat",
+                "images",
+                "other"
+            ],
+            "data": [
+                354641267832.0,
+                338485782896.0,
+                142191754420.0,
+                375146010.0,
+                1032947662.0,
+                389752182.0,
+                52698114286.0,
+                9343220414.0,
+                0.0
+            ]
+        },
+        "oc_tot_req": 321488.0,
+        "oc_tot_users": 11021.0,
+        "oc_active_ds": 248,
+        "oc_top10_reqs": {
+            "titles": [
+                "Chlorophyll, NASA MODIS Aqua",
+                "Chlorophyll, NASA MODIS Aqua",
+                "Chlorophyll, NASA MODIS Aqua",
+                "Chlorophyll, NOAA VIIRS SNPP",
+                "Chlorophyll, NASA VIIRS SNPP",
+                "Chlorophyll, NOAA VIIRS SNPP",
+                "Chlorophyll, NOAA VIIRS SNPP",
+                "Chlorophyll, NOAA VIIRS SNPP",
+                "Chlorophyll, NASA VIIRS SNPP",
+                "Chlorophyll, NASA VIIRS SNPP"
+            ],
+            "labels": [
+                "erdMH1chla8day",
+                "erdMH1chla1day",
+                "erdMH1chlamday",
+                "nesdisVHNchlaDaily",
+                "erdVH2018chlamday",
+                "erdVHNchla1day",
+                "erdVHNchla8day",
+                "erdVHNchla3day",
+                "erdVH2018chla1day",
+                "erdVH2018chla8day"
+            ],
+            "data": [
+                104342.0,
+                32328.0,
+                20406.0,
+                7252.0,
+                6902.0,
+                6660.0,
+                6156.0,
+                6054.0,
+                6054.0,
+                5722.0
+            ]
+        },
+        "oc_file_by_req": {
+            "labels": [
+                "nc",
+                "dods",
+                "text",
+                "metadata",
+                "graph",
+                "json",
+                "mat",
+                "images",
+                "other"
+            ],
+            "data": [
+                121046.0,
+                97258.0,
+                17358.0,
+                7306.0,
+                16536.0,
+                1674.0,
+                1346.0,
+                58926.0,
+                0.0
+            ]
+        },
+        "oc_file_by_size": {
+            "labels": [
+                "nc",
+                "dods",
+                "text",
+                "metadata",
+                "graph",
+                "json",
+                "mat",
+                "images",
+                "other"
+            ],
+            "data": [
+                101129052670.0,
+                11919544210.0,
+                19042155616.0,
+                279565564.0,
+                398930708.0,
+                87164704.0,
+                8876997430.0,
+                5476441042.0,
+                0.0
             ]
         }
     }

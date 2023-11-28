@@ -1,15 +1,26 @@
 
-class DataWorker:
-    def __init__(self, df, datevar):
-        self.df = df
+class Summarizer:
+    def __init__(self, df, datevar: str):
+
+        # Remove dataset_id == 'all_datasets'
+        self.df = df[df['dataset_id']!= 'all_datasets']
+
+        # Get date variable
         self.datevar = datevar
+
+        # set latest
         self.latest = self.df[datevar].max()
+
+        # Set latest year
         self.year = self.get_latest_year()
 
     def _check_var(self, colname):
-            # Check if the column exists
+            # Check column names exists
         if colname not in self.df.columns:
             raise KeyError(f"Column '{colname}' does not exist in the DataFrame.")
+
+    def get_columns(self)-> list:
+        return self.df.columns
 
     def _check_op(self, op):
         # Check for supported operations
@@ -26,6 +37,10 @@ class DataWorker:
         year = self.df[datevar].dt.year.max()
         return year
 
+    # def get_file_types(self, content: str, colnames: list)-> list:
+    #     ftypes = [ft.split(content)[0] for ft in colnames]
+    #     return ftypes
+
     def subset_by_year(self, year=None):
         if year is None:
             year = self.year
@@ -35,7 +50,10 @@ class DataWorker:
 
     def get_stat(self, colname, op):
 
+        # check if colname exists in df
         self._check_var(colname)
+
+        # check if op is available
         self._check_op(op)
 
         df = self.subset_by_year()
@@ -81,9 +99,11 @@ class DataWorker:
 
 
     def get_most_requested(self, year=None, n=10):
+        # year : returns most requested of the arg:year
+
         df = self.subset_by_year(year)
         df.sort_values(by='requests', ascending=False, inplace=True)
-        return df[['dataset_id', 'requests']].head(n)
+        return df[['dataset_title', 'dataset_id', 'requests']].head(n)
 
     def get_active_ds(self, year=None):
         df = self.subset_by_year(year)
@@ -93,6 +113,29 @@ class DataWorker:
         else:
             return unique_id
 
-    def get_requests_by_format(self, varnames: list):
-        [s.replace("_req", "") for s in varnames]
-        self.get_stat()
+
+    def get_req_by_format(self, data_type: str):
+        # format data ends with _size for size of requests
+        if str(data_type) == "size":
+            [s.replace('_size', '') for s in self.get_columns()]
+
+        # format data ends with _req for no of requests
+        elif str(data_type) == "req":
+            [s.replace("_req", "") for s in self.get_columns()]
+        else:
+            print(f"Error: {data_type}  Req by format only recognizes size or req")
+            return 0
+
+
+        # List of column names
+        type_cols = [col for col in self.get_columns() if col.endswith(data_type)]
+
+        # List of file types
+        type_names = [s.replace("_"+ data_type, "") for s in type_cols]
+
+        # List of sums
+        type_sums = [self.get_stat(cname, "sum") for cname in type_cols]
+
+        return [type_names, type_sums]
+
+    # Group

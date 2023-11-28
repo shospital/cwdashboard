@@ -164,13 +164,11 @@ function byFormatTable(dat, header,documentId) {
     table+="</tr></thead>";
     table+="<tbody>";
     for(let i = 0; i < dat[0].length; i++) {
-
-    table+="<tr><td>"+dat[1][i]+"</a></td><td>"+dat[0][i].toLocaleString()+"</td></tr>";
-}
+        table+="<tr><td>"+dat[1][i]+"</a></td><td>"+dat[0][i].toLocaleString()+"</td></tr>";
+    }
     table += "</tbody></table>";
-    document.getElementById(documentId).innerHTML = table;
-
-
+    // document.getElementById(documentId).innerHTML = table;
+    return table;
 }
 
 function getStats(data) {
