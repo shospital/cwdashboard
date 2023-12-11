@@ -1,41 +1,3 @@
-const dpath = 'js/data.json'
-
-async function fetchData(url) {
-    try {
-        const response = await fetch(url);
-        if(!response.ok) {
-            throw new Error(`Error Status: ${response.status}`);
-        }
-        return await response.json()
-    } catch(error) {
-        console.error("Could not fetch data: ", error);
-    }
-}
-
-
-
-fetchData(dpath).then(data => {
-    if (data) {
-
-        console.log(data.stats.active_ds)
-        document.getElementById("total_request").innerHTML= data.stats.tot_req.toLocaleString("en-US");
-        document.getElementById("unique_users").innerHTML= data.stats.tot_users.toLocaleString("en-US");
-        document.getElementById("no_ds").innerHTML= data.stats.active_ds.toLocaleString("en-US");
-        document.getElementById("byrequestTB").innerHTML = get_requestTable(data.stats.top10_reqs, ['Dataset Name', 'No of Requests']);
-
-        // requestTable(tot_req_id, ['Dataset ID', 'No of Requests'], 'byrequestTB');
-       // var ctx = document.getElementById('BarChartTop101').getContext('2d');
-        //barchart1(ctx, data.stats.top10_reqs);
-        var ctx1 = document.getElementById('BarChartTop10').getContext('2d');
-        var ctx2 = document.getElementById('PieChart_Ftype').getContext('2d');
-        var ctx3 = document.getElementById('PieChart_Ftype_size').getContext('2d');
-        // Add barchart of top 10 requests
-
-        barchart1(ctx1, data.stats.top10_reqs);
-        piechart1(ctx2, data.stats.file_by_req);
-        piechart2(ctx3, data.stats.file_by_size);
-    }
-});
 
 
 function get_requestTable(dat, header) {
@@ -47,16 +9,14 @@ function get_requestTable(dat, header) {
 
   // console.log(dat);
   table+="<tbody>";
-  dat.labels.forEach((label, index) => {
-    console.log('Label:', label, 'Data:', dat.data[index]);
-    table+="<tr><td><a href='https://coastwatch.pfeg.noaa.gov/erddap/info/"+label+"/index.html'>"+dat.titles[index]+"</a></td><td>"+dat.data[index].toLocaleString()+"</td></tr>";
+  dat.titles.forEach((title, index) => {
+    console.log('Label:', title, 'Data:', dat.data[index]);
+    table+="<tr><td>"+dat.titles[index]+"</a></td><td>"+dat.data[index].toLocaleString()+"</td></tr>";
   });
 
   table += "</tbody></table>";
 
   return table;
-
-
 
 
 }
@@ -71,13 +31,17 @@ function piechart1(ctx, dat) {
       datasets: [{
         label: 'No of Requests',
         data: dat.data,
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)'
-        ],
         hoverOffset: 4
       }]
+    },
+    options: {
+      plugins: {
+        colorschemes: {
+          scheme: 'brewer.Paired12'
+        }
+
+      }
+
     }
   })
 }
@@ -90,13 +54,17 @@ function piechart2(ctx, dat) {
       datasets: [{
         label: 'Download Size',
         data: dat.data,
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)'
-        ],
         hoverOffset: 4
       }]
+    },
+    options: {
+      plugins: {
+        colorschemes: {
+          scheme: 'brewer.Paired12'
+        }
+
+      }
+
     }
   })
 }
@@ -109,7 +77,7 @@ function barchart1(ctx, dat) {
       labels: dat.titles,
 
   datasets: [{
-    axis: 'y',
+    indexAxis: 'y',
     label: 'No. of Requests',
     data: dat.data,
     borderWidth: 1,
@@ -129,89 +97,14 @@ function barchart1(ctx, dat) {
   }]
   },
   options: {
-    indexAxis: 'y'
-    }
-  });
+    plugins: {
+      colorschemes: {
+        scheme: 'brewer.Paired12'
       }
 
+    }
 
-// function barchart1(ctx, data) {
+  }
 
-
-//     var chart = new Chart(ctx, {
-//   type: 'bar',
-//   data: {
-//     labels: data.labels
-//     datasets: [1, 2, 3].map(function(i) {
-//       return {
-//         label: 'Dataset ' + i,
-//         data: [0, 0, 0, 0, 0, 0, 0].map(Math.random),
-//         fill: false
-//       };
-//     })
-//   },
-//   options: {
-// plugins: {
-//   colorschemes: {
-//     scheme: 'brewer.SetOne4'
-//   }
-// }
-// }
-// });
-//     }
-
-
-
-//     labels = data.labels;
-
-//     dataset = {
-//         labels,
-//         datasets: [{
-//             axis: 'y',
-//             label: 'No of requests',
-//             data,
-//             fill: false,
-//             backgroundColor: ,
-//             borderColor:,
-//             borderWidth: 1,
-//             maxBarThickness: 60,
-//         }]
-//     }
-// }
-
-// const dataTop10 = {
-//     labels,
-//     datasets: [{
-//       axis: 'y',
-//       label: 'No. of Requests',
-//       data: ds,
-//       fill: false,
-//       backgroundColor: [
-//       'rgba(255, 99, 132, 0.2)',
-//       'rgba(255, 159, 64, 0.2)',
-//       'rgba(255, 205, 86, 0.2)',
-//       'rgba(75, 192, 192, 0.2)',
-//       'rgba(54, 162, 235, 0.2)',
-//       'rgba(153, 102, 255, 0.2)',
-//       'rgba(201, 203, 207, 0.2)',
-//       'rgba(255, 99, 132, 0.2)',
-//       'rgba(255, 159, 64, 0.2)',
-//       'rgba(255, 205, 86, 0.2)'
-//       ],
-//       borderColor: [
-//         'rgb(255, 99, 132)',
-//         'rgb(255, 159, 64)',
-//         'rgb(255, 205, 86)',
-//         'rgb(75, 192, 192)',
-//         'rgb(54, 162, 235)',
-//         'rgb(153, 102, 255)',
-//         'rgb(201, 203, 207)',
-//         'rgb(255, 99, 132)',
-//         'rgb(255, 159, 64)',
-//         'rgb(255, 205, 86)'
-//       ],
-
-//       borderWidth: 1,
-//       maxBarThickness: 60,
-//     }]
-//   };
+  });
+      }

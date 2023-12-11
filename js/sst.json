@@ -1,0 +1,117 @@
+{
+    "stats": {
+        "latest_year": 2022,
+        "tot_req": 7652116.0,
+        "tot_users": 93727.0,
+        "active_ds": 102,
+        "top10_reqs": {
+            "titles": [
+                "SST, NASA MUR",
+                "SST, NOAA Optimum Interpolation",
+                "SST, NOAA POES AVHRR",
+                "SST NASA MODIS Aqua",
+                "SST, NOAA GOES ",
+                "SST, Pathfinder V5.3",
+                "SST, NOAA VIIRS SNPP",
+                "Aviso Sea Surface Height",
+                "SST, NOAA GeoPolar Blended ",
+                "SST, NASA G1"
+            ],
+            "data": [
+                3307940.0,
+                1394862.0,
+                743968.0,
+                743170.0,
+                592164.0,
+                292884.0,
+                192634.0,
+                175610.0,
+                79572.0,
+                60090.0
+            ]
+        },
+        "file_by_req": {
+            "labels": [
+                "nc",
+                "dods",
+                "text",
+                "metadata",
+                "graph",
+                "json",
+                "mat",
+                "images",
+                "other"
+            ],
+            "data": [
+                3001774.0,
+                1045134.0,
+                940298.0,
+                817192.0,
+                263868.0,
+                114938.0,
+                24716.0,
+                1443228.0,
+                0.0
+            ]
+        },
+        "file_by_size": {
+            "labels": [
+                "nc",
+                "dods",
+                "text",
+                "metadata",
+                "graph",
+                "json",
+                "mat",
+                "images",
+                "other"
+            ],
+            "data": [
+                8921417807626.0,
+                904034995006.0,
+                2358305673744.0,
+                4776774662.0,
+                7067014350.0,
+                11141699690.0,
+                201407753678.0,
+                71246636390.0,
+                0.0
+            ]
+        },
+        "monthly_sensor": {
+            "labels": {
+                "labels": [
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12
+                ]
+            },
+            "datasets": [
+                {
+                    "label": "viirs-snpp",
+                    "data": [
+                        9216.0,
+                        12266.0,
+                        18506.0,
+                        17120.0,
+                        21436.0,
+                        22268.0,
+                        27138.0,
+                        16174.0,
+                        16282.0,
+                        23922.0,
+                        8306.0
+                    ]
+                }
+            ]
+        }
+    }
+}

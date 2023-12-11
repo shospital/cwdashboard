@@ -4,6 +4,7 @@ class Summarizer:
 
         # Remove dataset_id == 'all_datasets'
         self.df = df[df['dataset_id']!= 'all_datasets']
+        self.df['month'] = self.df[datevar].dt.month
 
         # Get date variable
         self.datevar = datevar
@@ -13,6 +14,7 @@ class Summarizer:
 
         # Set latest year
         self.year = self.get_latest_year()
+
 
     def _check_var(self, colname):
             # Check column names exists
@@ -74,7 +76,7 @@ class Summarizer:
         if op == 'count':
             return df[colname].count()
 
-
+    # compute {sum/mean/count} of {colname} grouped by {by}
     def get_stat_by(self, colname, by, op):
         df = self.subset_by_year()
         self._check_var(colname)
@@ -84,26 +86,40 @@ class Summarizer:
         # Perform the operation
         if op == 'mean':
             try:
-                return df[colname].fillna(0).groupby(by).mean()
+                return df.fillna(0).groupby(by)[colname].mean()
             except TypeError:
                 raise TypeError(
                     f"Cannot calculate mean of non-numeric data in column '{colname}'.")
         if op == 'sum':
             try:
-                return df[colname].fillna(0).groupby(by).sum()
+                return df.fillna(0).groupby(by)[colname].sum()
             except TypeError:
                 raise TypeError(
                     f"Cannot calculate sum of non-numeric data in column '{colname}'.")
         if op == 'count':
-            return df[colname].groupby(by).count()  # count() works for any data type
+            return df.groupby(by)[colname].count()  # count() works for any data type
 
+
+    def get_monthly_stat_by(self, colname, by, op='sum'):
+        df = self.subset_by_year()
+        # print(df.columns)
+        self._check_var(colname)
+        self._check_op(op)
+
+        stat = df.fillna(0).groupby(['month', by])[colname].sum().reset_index()
+        stat_wide = stat.pivot(
+            index = by, columns = 'month', values = colname).reset_index()
+
+        return stat_wide
 
     def get_most_requested(self, year=None, n=10):
         # year : returns most requested of the arg:year
 
         df = self.subset_by_year(year)
-        df.sort_values(by='requests', ascending=False, inplace=True)
-        return df[['dataset_title', 'dataset_id', 'requests']].head(n)
+        reqdf = df.groupby('dataset_title')['requests'].sum()
+        reqdf = reqdf.reset_index().sort_values(by='requests', ascending=False)
+        return reqdf[['dataset_title', 'requests']].head(n)
+        # return reqdf.head(n)
 
     def get_active_ds(self, year=None):
         df = self.subset_by_year(year)

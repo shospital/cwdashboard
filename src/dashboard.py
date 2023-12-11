@@ -7,10 +7,9 @@ DATA_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard"
 INFO_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard"
 
 OUT_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard/js"
-CSV_FILE = "erddap_log.csv"
+CSV_FILE = "erddap_logs.csv"
 INFO_FILE = "wcn_log_crosswalk.csv"
 
-JSON_FILE = "data.json"
 VARNAMES = ['dataset_id', 'data_volume', 'requests', 'nc_req', 'dods_req',
        'text_req', 'metadata_req', 'graph_req', 'json_req', 'mat_req',
        'images_req', 'other_req', 'nc_size', 'dods_size', 'text_size',
@@ -58,56 +57,51 @@ def check_clean_data(df: pd.DataFrame) -> pd.DataFrame:
     df['year'], df['month'] = df['newtime'].dt.year, df['newtime'].dt.month
     return df
 
-def main():
+def format_monthly(df, colname):
+    datasets = []
 
-    # Get logdata (csv)
-    ds = get_logdata(DATA_PATH, CSV_FILE)
+    # append labels
+    labels = {
+        'labels' : df.columns[1:].tolist()
+    }
+    datasets.append(labels)
+    data = []
+    for index, row in df.iterrows():
+        d = {
+            'label' : row[colname],
+            'data' : row[1:].tolist()
+        }
+    data.append(d)
+    datasets.append(data)
+    return datasets
 
-    # Get data info
-    ds_info = get_logdata(INFO_PATH, INFO_FILE)
-
-    # Merge data
-    merged_ds = ds.merge(ds_info, how='inner', on='dataset_id')
-
-    # merged_ds.to_csv('test.csv', index=False)
-
-    # Check all colnames to be used for Summarizer()
-    df = check_clean_data(merged_ds)
-
-
-    worker = Summarizer(df, datevar = 'newtime')
-    tot_req = worker.get_stat(colname= 'requests', op = 'sum')
-    tot_users = worker.get_stat(colname = 'unique_visitors', op = 'sum')
-    top_10_req = worker.get_most_requested(year = None, n=10)
-    active_ds = worker.get_active_ds()
-
-    #get_req_by_format
-    file_by_req = worker.get_req_by_format('req')
-    file_by_size = worker.get_req_by_format('size')
-
-
-    # Group: Ocean Color Stat
-    oc_df = df[df['group_title'].isin(['NOAA Ocean Color', 'NASA Ocean Color'])]
-    ocolor = Summarizer(oc_df, datevar = 'newtime')
-    oc_tot_req = ocolor.get_stat(colname= 'requests', op = 'sum')
-    oc_tot_users = ocolor.get_stat(colname = 'unique_visitors', op = 'sum')
-    oc_top_10_req = ocolor.get_most_requested(year = None, n=10)
-    oc_active_ds = ocolor.get_active_ds()
-
-    oc_file_by_req = ocolor.get_req_by_format('req')
-    oc_file_by_size = ocolor.get_req_by_format('size')
-
-
-
+def stats_to_json(summarizer: Summarizer):
     json_dict = {}
-    stat = {
+    # tot_req = summarizer.get_stat(colname= 'requests', op = 'sum')
+    tot_req = summarizer.get_stat(colname= 'requests',  op = 'sum')
+    tot_users = summarizer.get_stat(colname = 'unique_visitors', op = 'sum')
+    top_10_req = summarizer.get_most_requested(year = None, n=10)
+    active_ds = summarizer.get_active_ds()
+
+    file_by_req = summarizer.get_req_by_format('req')
+    file_by_size = summarizer.get_req_by_format('size')
+
+    latest_year = summarizer.get_latest_year()
+
+    monthly_sensor = summarizer.get_monthly_stat_by(
+        colname='requests', by= 'sensor', op = 'sum')
+    formatted_sensor = format_monthly(monthly_sensor, 'sensor')
+    print(formatted_sensor)
+
+    stats = {
+                'latest_year': latest_year,
                 'tot_req' : tot_req,
                 'tot_users' : tot_users,
                 'active_ds' : active_ds,
                 'top10_reqs':
                     {
                         'titles': top_10_req['dataset_title'].tolist(),
-                        'labels': top_10_req['dataset_id'].tolist(),
+                        # 'labels': top_10_req['dataset_id'].tolist(),
                         'data': top_10_req['requests'].tolist()
                     },
                 'file_by_req':
@@ -120,37 +114,81 @@ def main():
                         'labels': file_by_size[0],
                         'data' : file_by_size[1]
                     },
-
-                'oc_tot_req' : oc_tot_req,
-                'oc_tot_users' : oc_tot_users,
-                'oc_active_ds' : oc_active_ds,
-                'oc_top10_reqs':
+                'monthly_sensor':
                     {
-                        'titles': oc_top_10_req['dataset_title'].tolist(),
-                        'labels': oc_top_10_req['dataset_id'].tolist(),
-                        'data': oc_top_10_req['requests'].tolist()
-                    },
-                'oc_file_by_req':
-                    {
-                        'labels': oc_file_by_req[0],
-                        'data' : oc_file_by_req[1]
-                    },
-                'oc_file_by_size':
-                    {
-                        'labels': oc_file_by_size[0],
-                        'data' : oc_file_by_size[1]
+                        'labels' : formatted_sensor[0],
+                        'datasets' : formatted_sensor[1]
                     }
+
+
             }
 
+    json_dict["stats"] = stats
+    return json_dict
 
 
-    json_dict["stats"] = stat
+def main():
 
-    outfile = os.path.join(OUT_PATH, JSON_FILE)
+    # Get logdata (csv)
+    ds = get_logdata(DATA_PATH, CSV_FILE)
 
-    with open(outfile, 'w') as file:
-        json.dump(json_dict, file, indent=4)
+    # Get data info
+    ds_info = get_logdata(INFO_PATH, INFO_FILE)
 
+    # Merge data
+    merged_ds = ds.merge(ds_info, how='inner', on='dataset_id')
+
+    # Check all colnames to be used for Summarizer()
+    df = check_clean_data(merged_ds)
+
+    # Create Summarizer instance
+    worker = Summarizer(df, datevar = 'newtime')
+
+    # Get stats in json format
+    stat_json = stats_to_json(worker)
+
+    # Write to a file
+    datafile = os.path.join(OUT_PATH, "data.json")
+    with open(datafile, 'w') as file:
+        json.dump(stat_json, file, indent=4)
+
+
+    ## Ocean Color Stats
+
+    oc_df = df[df['group_title'].isin(['NOAA Ocean Color', 'NASA Ocean Color'])]
+    ocolor = Summarizer(oc_df, datevar = 'newtime')
+    dat2json = stats_to_json(ocolor)
+
+    # Write to a file
+    ofile = os.path.join(OUT_PATH, "ocolor.json")
+    with open(ofile, 'w') as file:
+        json.dump(dat2json, file, indent=4)
+
+
+    ## Sea Surface Temperature
+    sst_df = df[df['variable'] == "sst"]
+    sst = Summarizer(sst_df, datevar='newtime')
+    dat2json = stats_to_json(sst)
+    ofile = os.path.join(OUT_PATH, "sst.json")
+    with open(ofile, 'w') as file:
+        json.dump(dat2json, file, indent=4)
+
+    ## Wind
+    wind_df = df[df['variable'] == "wind"]
+    wind = Summarizer(wind_df, datevar='newtime')
+    dat2json = stats_to_json(wind)
+    ofile = os.path.join(OUT_PATH, "wind.json")
+    with open(ofile, 'w') as file:
+        json.dump(dat2json, file, indent=4)
+
+    ## Habitat
+    habitat_df = df[df['variable'] == "habitat"]
+    habitat = Summarizer(habitat_df, datevar='newtime')
+    dat2json = stats_to_json(habitat)
+
+    ofile = os.path.join(OUT_PATH, "habitat.json")
+    with open(ofile, 'w') as file:
+        json.dump(dat2json, file, indent=4)
 
 if __name__ == "__main__":
     main()
