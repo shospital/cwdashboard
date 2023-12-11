@@ -1,0 +1,117 @@
+{
+    "stats": {
+        "latest_year": 2022,
+        "tot_req": 17465118.0,
+        "tot_users": 329230.0,
+        "active_ds": 490,
+        "top10_reqs": {
+            "titles": [
+                "SST, NASA MUR",
+                "Chlorophyll, NASA MODIS Aqua",
+                "SST, NOAA Optimum Interpolation",
+                "Rrs, NOAA, VIIRS SNPP",
+                "Chlorophyll, NOAA VIIRS SNPP",
+                "Winds, ASCAT",
+                "SST, NOAA POES AVHRR",
+                "SST NASA MODIS Aqua",
+                "SST, NOAA GOES ",
+                "Thermal Fronts, NASA MUR"
+            ],
+            "data": [
+                3307940.0,
+                1758060.0,
+                1394862.0,
+                1141588.0,
+                976610.0,
+                895372.0,
+                743968.0,
+                743170.0,
+                592164.0,
+                463908.0
+            ]
+        },
+        "file_by_req": {
+            "labels": [
+                "nc",
+                "dods",
+                "text",
+                "metadata",
+                "graph",
+                "json",
+                "mat",
+                "images",
+                "other"
+            ],
+            "data": [
+                4156524.0,
+                5249080.0,
+                1555970.0,
+                1275058.0,
+                864704.0,
+                874646.0,
+                50928.0,
+                3436660.0,
+                0.0
+            ]
+        },
+        "file_by_size": {
+            "labels": [
+                "nc",
+                "dods",
+                "text",
+                "metadata",
+                "graph",
+                "json",
+                "mat",
+                "images",
+                "other"
+            ],
+            "data": [
+                10904565700564.0,
+                5096148773620.0,
+                4185557916828.0,
+                7846103428.0,
+                26106280728.0,
+                54423674590.0,
+                397953017498.0,
+                217645618766.0,
+                0.0
+            ]
+        },
+        "monthly_sensor": {
+            "labels": {
+                "labels": [
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12
+                ]
+            },
+            "datasets": [
+                {
+                    "label": "viirs-snpp-n20",
+                    "data": [
+                        6988.0,
+                        7510.0,
+                        9712.0,
+                        8322.0,
+                        8794.0,
+                        8610.0,
+                        11332.0,
+                        168.0,
+                        304.0,
+                        348.0,
+                        662.0
+                    ]
+                }
+            ]
+        }
+    }
+}
