@@ -3,10 +3,10 @@ import pandas as pd
 from utils.summarizer import Summarizer
 import json
 
-DATA_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard"
-INFO_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard"
+DATA_PATH = "cwdashboard"
+INFO_PATH = "cwdashboard"
 
-OUT_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard/js"
+OUT_PATH = "cwdashboard/js"
 CSV_FILE = "erddap_logs.csv"
 INFO_FILE = "wcn_log_crosswalk.csv"
 
