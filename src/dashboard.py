@@ -7,8 +7,10 @@ DATA_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard"
 INFO_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard"
 
 OUT_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard/js"
-CSV_FILE = "erddap_logs.csv"
-INFO_FILE = "wcn_log_crosswalk.csv"
+# CSV_FILE = "erddap_logs.csv"
+#INFO_FILE = "wcn_log_crosswalk.csv"
+CSV_FILE = "https://polarwatch.noaa.gov/erddap/tabledap/erddap_logs_monthly.csv?dataset_id%2Cdata_volume%2Crequests%2Cnc_req%2Cdods_req%2Ctext_req%2Cmetadata_req%2Cgraph_req%2Cjson_req%2Cmat_req%2Cimages_req%2Cother_req%2Cnc_size%2Cdods_size%2Ctext_size%2Cmetadata_size%2Cgraph_size%2Cjson_size%2Cmat_size%2Cimages_size%2Cother_size%2Cunique_visitors%2Ctime_epoch%2Ctime&time%3E=2020-06-15T12%3A00%3A00Z&time%3C=2022-12-15T12%3A00%3A00Z"
+INFO_FILE = "https://polarwatch.noaa.gov/erddap/tabledap/wcn_log_crosswalk.csv?dataset_id%2Cgroup_title%2Cdata_source%2Cdataset_title%2Cvariable%2Csensor"
 
 VARNAMES = ['dataset_id', 'data_volume', 'requests', 'nc_req', 'dods_req',
        'text_req', 'metadata_req', 'graph_req', 'json_req', 'mat_req',
@@ -37,6 +39,13 @@ def get_logdata(path: str, filename: str) -> pd.DataFrame:
 
     df = pd.read_csv(dfile)
 
+    if len(df) >= 1:
+        # remove row with units
+        df.drop(index=0, inplace=True)
+    return df
+
+def get_logdata_erddap(filename: str) -> pd.DataFrame:
+    df = pd.read_csv(filename)
     if len(df) >= 1:
         # remove row with units
         df.drop(index=0, inplace=True)
@@ -130,10 +139,10 @@ def stats_to_json(summarizer: Summarizer):
 def main():
 
     # Get logdata (csv)
-    ds = get_logdata(DATA_PATH, CSV_FILE)
+    ds = get_logdata_erddap(CSV_FILE)
 
     # Get data info
-    ds_info = get_logdata(INFO_PATH, INFO_FILE)
+    ds_info = get_logdata_erddap(INFO_FILE)
 
     # Merge data
     merged_ds = ds.merge(ds_info, how='inner', on='dataset_id')
@@ -149,7 +158,7 @@ def main():
 
     # Write to a file
     datafile = os.path.join(OUT_PATH, "data.json")
-    with open(datafile, 'w') as file:
+    with open(datafile, 'w+') as file:
         json.dump(stat_json, file, indent=4)
 
 

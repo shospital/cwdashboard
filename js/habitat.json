@@ -1,0 +1,107 @@
+{
+    "stats": {
+        "latest_year": 2022,
+        "tot_req": 205462.0,
+        "tot_users": 5376.0,
+        "active_ds": 10,
+        "top10_reqs": {
+            "titles": [
+                "Sardine Habitat Model MODIS",
+                "C-HARM HABS Forecast V1",
+                "C-HARM HABS Forecast V2",
+                "Sardine Habitat Model VIIRS",
+                "NOAA EcoCast Habitat Model"
+            ],
+            "data": [
+                89320.0,
+                65912.0,
+                38892.0,
+                9122.0,
+                2216.0
+            ]
+        },
+        "file_by_req": {
+            "labels": [
+                "nc",
+                "dods",
+                "text",
+                "metadata",
+                "graph",
+                "json",
+                "mat",
+                "images",
+                "other"
+            ],
+            "data": [
+                73518.0,
+                42132.0,
+                35802.0,
+                5456.0,
+                24236.0,
+                82.0,
+                1854.0,
+                22382.0,
+                0.0
+            ]
+        },
+        "file_by_size": {
+            "labels": [
+                "nc",
+                "dods",
+                "text",
+                "metadata",
+                "graph",
+                "json",
+                "mat",
+                "images",
+                "other"
+            ],
+            "data": [
+                51152692050.0,
+                31214192370.0,
+                5404171966.0,
+                52185198.0,
+                599506580.0,
+                168414.0,
+                1017986732.0,
+                1192107708.0,
+                0.0
+            ]
+        },
+        "monthly_sensor": {
+            "labels": {
+                "labels": [
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12
+                ]
+            },
+            "datasets": [
+                {
+                    "label": "viirs-snpp",
+                    "data": [
+                        5554.0,
+                        5300.0,
+                        12450.0,
+                        9762.0,
+                        8998.0,
+                        11518.0,
+                        18244.0,
+                        16118.0,
+                        9052.0,
+                        11908.0,
+                        5022.0
+                    ]
+                }
+            ]
+        }
+    }
+}
