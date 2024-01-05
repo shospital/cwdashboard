@@ -7,7 +7,8 @@ DATA_PATH = "cwdashboard"
 INFO_PATH = "cwdashboard"
 
 
-OUT_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard/js"
+#OUT_PATH = "/Users/sunbak/PolarWatch/codebase/cwdashboard/js"
+OUT_PATH = "./../js"
 # CSV_FILE = "erddap_logs.csv"
 #INFO_FILE = "wcn_log_crosswalk.csv"
 CSV_FILE = "https://polarwatch.noaa.gov/erddap/tabledap/erddap_logs_monthly.csv?dataset_id%2Cdata_volume%2Crequests%2Cnc_req%2Cdods_req%2Ctext_req%2Cmetadata_req%2Cgraph_req%2Cjson_req%2Cmat_req%2Cimages_req%2Cother_req%2Cnc_size%2Cdods_size%2Ctext_size%2Cmetadata_size%2Cgraph_size%2Cjson_size%2Cmat_size%2Cimages_size%2Cother_size%2Cunique_visitors%2Ctime_epoch%2Ctime&time%3E=2020-06-15T12%3A00%3A00Z&time%3C=2022-12-15T12%3A00%3A00Z"
